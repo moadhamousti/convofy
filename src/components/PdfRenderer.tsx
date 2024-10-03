@@ -1,12 +1,13 @@
 'use client'
 
 
+import { Loader2 } from 'lucide-react';
 import { Document, Page, pdfjs } from 'react-pdf'
 
 import 'react-pdf/dist/Page/AnnotationLayer.css'
 import 'react-pdf/dist/Page/TextLayer.css'
 
-pdfjs.GlobalWorkerOptions.workerSrc = `https://cdn.jsdelivr.net/npm/pdfjs-dist@${pdfjs.version}/build/pdf.worker.js`;
+pdfjs.GlobalWorkerOptions.workerSrc = "/pdf.worker.mjs";
 
 interface PdfRendererProps {
   url: string
@@ -23,7 +24,14 @@ const PdfRenderer = ({ url }: PdfRendererProps) => {
 
       <div className="flex-1 w-full max-h-screen">
         <div className="">
-          <Document file={url} className='max-h-full'>
+          <Document 
+            loading={
+              <div className='flex justify-center'>
+                <Loader2 className='my-24 h-6 w-6 animate-spin' />
+              </div>
+            }
+            file={url} 
+            className='max-h-full'>
           <Page
             // width={width ? width : 1}
             pageNumber={1}
