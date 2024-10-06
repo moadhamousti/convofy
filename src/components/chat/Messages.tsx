@@ -1,6 +1,12 @@
 import React from 'react'
 
-const Messages = () => {
+
+interface MessagesProps {
+  fileId: string
+}
+
+
+const Messages = ({ fileId }: MessagesProps) => {
   return (
     <div>
       
