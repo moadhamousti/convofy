@@ -1,15 +1,13 @@
-import { db } from "@/db";
-import { SendMessageValidator } from "@/lib/validators/SendMessageValidator";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { NextRequest } from "next/server";
-import { OpenAIEmbeddings } from "@langchain/openai";
-// import { pinecone } from "@/lib/pinecone";
-import { getPineconeClient } from '@/lib/pinecone'
-import { PineconeStore } from "@langchain/pinecone";
+import { db } from '@/db'
 import { openai } from '@/lib/openai'
-// import { openai } from '@ai-sdk/openai';
-import { OpenAIStream, StreamingTextResponse } from 'ai'
+import { getPineconeClient } from '@/lib/pinecone'
+import { SendMessageValidator } from '@/lib/validators/SendMessageValidator'
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
+import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
+import { PineconeStore } from 'langchain/vectorstores/pinecone'
+import { NextRequest } from 'next/server'
 
+import { OpenAIStream, StreamingTextResponse } from 'ai'
 
 export const POST = async (req: NextRequest) => {
   // endpoint for asking a question to a pdf file
@@ -52,15 +50,11 @@ export const POST = async (req: NextRequest) => {
   })
 
   const pinecone = await getPineconeClient()
-  // const pineconeIndex = pinecone.Index('quill')
   const pineconeIndex = pinecone.Index('convofy')
-
-  // const pineconeIndex = pinecone.Index('convofy')
 
   const vectorStore = await PineconeStore.fromExistingIndex(
     embeddings,
     {
-      //@ts-ignore
       pineconeIndex,
       namespace: file.id,
     }
@@ -121,8 +115,8 @@ export const POST = async (req: NextRequest) => {
     ],
   })
 
-  const stream = OpenAIStream(response as any, { // Using 'any' to bypass the type error temporarily
-    async onCompletion(completion: string) { // Ensure completion is of the correct type
+  const stream = OpenAIStream(response as any, {
+    async onCompletion(completion) {
       await db.message.create({
         data: {
           text: completion,
@@ -130,9 +124,10 @@ export const POST = async (req: NextRequest) => {
           fileId,
           userId,
         },
-      });
+      })
     },
-  });
+  })
 
   return new StreamingTextResponse(stream)
 }
+

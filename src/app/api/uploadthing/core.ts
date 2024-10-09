@@ -1,11 +1,15 @@
-import { db } from "@/db";
-import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
-import { createUploadthing, type FileRouter } from "uploadthing/next";
-import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
-// import { pinecone } from "@/lib/pinecone";
+import { db } from '@/db'
+import { getKindeServerSession } from '@kinde-oss/kinde-auth-nextjs/server'
+import {
+  createUploadthing,
+  type FileRouter,
+} from 'uploadthing/next'
+
+import { PDFLoader } from 'langchain/document_loaders/fs/pdf'
+import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
+import { PineconeStore } from 'langchain/vectorstores/pinecone'
 import { getPineconeClient } from '@/lib/pinecone'
-import { OpenAIEmbeddings } from "@langchain/openai";
-import { PineconeStore } from "@langchain/pinecone";
+
 
 const f = createUploadthing();
 
@@ -29,8 +33,8 @@ export const ourFileRouter = {
           key: file.key,
           name: file.name,
           userId: metadata.userId,
-          // url: `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
-          url: file.url,
+          url: `https://uploadthing-prod.s3.us-west-2.amazonaws.com/${file.key}`,
+          // url: file.url,
           uploadStatus: 'PROCESSING',
         },
       });
