@@ -5,6 +5,9 @@ import {
   type FileRouter,
 } from 'uploadthing/next'
 
+
+// import { PDFLoader } from 'langchain/document_loaders/fs/pdf'
+
 import { PDFLoader } from 'langchain/document_loaders/fs/pdf'
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai'
 import { PineconeStore } from 'langchain/vectorstores/pinecone'
