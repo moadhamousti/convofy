@@ -14,11 +14,11 @@ import Link from 'next/link'
 import { format } from 'date-fns'
 import { Button } from './ui/button'
 import { useState } from 'react'
-// import { getUserSubscriptionPlan } from '@/lib/stripe'
+import { getUserSubscriptionPlan } from '@/lib/stripe'
 
-// interface PageProps {
-//   subscriptionPlan: Awaited<ReturnType<typeof getUserSubscriptionPlan>>
-// }
+interface PageProps {
+  subscriptionPlan: Awaited<ReturnType<typeof getUserSubscriptionPlan>>
+}
 
 const Dashboard = () => {
   const [currentlyDeletingFile, setCurrentlyDeletingFile] =
@@ -91,7 +91,7 @@ const Dashboard = () => {
 
                   <div className='flex items-center gap-2'>
                     <MessageSquare className='h-4 w-4' />
-                    mocked
+                    {/* mocked */}
                   </div>
 
                   <Button
@@ -119,7 +119,7 @@ const Dashboard = () => {
           <h3 className='font-semibold text-xl'>
             Pretty empty around here
           </h3>
-          <p>Let&apos;s upload your first PDF.</p>
+          {/* <p>Let&apos;s upload your first PDF.</p> */}
         </div>
       )}
     </main>
